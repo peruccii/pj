@@ -1,6 +1,6 @@
 'use strict'
 
-import { showCourse } from "./apiChamada.js"
+import { showCourse,} from "./apiChamada.js"
 
 const criarCard = (item) => {
     const div = document.createElement('div')
@@ -22,7 +22,7 @@ const criarCard = (item) => {
 
 const carregarCard = async () => {
     const dados = await showCourse()
-    const container = document.getElementById('course')
+    const container = document.getElementById('cursos')
     const criandoCards = dados.map(criarCard)
     container.replaceChildren(...criandoCards)
 }
@@ -31,3 +31,4 @@ carregarCard()
 document.getElementById('cursos').addEventListener('click', (evento) => {
     localStorage.setItem('cursos', evento.target.textContent)
 })
+

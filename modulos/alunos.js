@@ -714,12 +714,15 @@ const getNomes = function(){
 
 
 const getAlunosbyCurso = function(curso){
-    let esc = curso
+    let course = curso
     let listaAlunos = []
     let erro = true
+
+    if(typeof(course) != 'undefined') {
+        if(course != '') {
     alunos.forEach(item => {
         item.curso.forEach(itemCurso => {
-            if(itemCurso.sigla == esc){
+            if(itemCurso.sigla == course){
                 listaAlunos.push(
                     {
                         nome: item.nome,
@@ -741,6 +744,9 @@ const getAlunosbyCurso = function(curso){
         return listaAlunos
     }
 }
+    }}
+
+    
 
 const getAlunobyMatricula = function (matriculaAluno) {
     let matricula = matriculaAluno
@@ -780,30 +786,35 @@ const getAlunobyMatricula = function (matriculaAluno) {
 
 
 
-const getStatusFC = function(escolhaDois){
-    let escolha = escolhaDois
+const getAlunobyStatus = function(estado, curso){
+    let status = estado
     let listaStatusfc = []
     let course = curso
     let erro = true
 
-    
-
-    alunos.forEach(item => {
-        if(item.status.indexOf(escolha) > -1){
-            listaStatusfc.push(
-                {
-                    nome: item.nome
+    if(typeof(status) != 'undefined') {
+        if(status != '') {
+            let alunos = getAlunosbyCurso(course)
+            alunos.forEach(item => {
+                if(item.status.indexOf(escolha) > -1){
+                    listaStatusfc.push(
+                        {
+                            nome: item.nome
+                        }
+                    )
                 }
-            )
+                erro = false
+            })
+            if (erro) {
+                return false
+            }else{
+                return listaStatusfc
+            }
         }
-        erro = false
-    })
-    if (erro) {
-        return false
-    }else{
-        return listaStatusfc
+        }
     }
-}
+
+    
 
 
 //Endpoint listagem ano de conclusão
@@ -835,7 +846,6 @@ const getAno = function(ano){
 
 
 
-
 module.exports = {
-    getAlunosbyCurso, getNomes, getAlunobyMatricula, getStatusFC, getAno
+    getAlunosbyCurso, getNomes, getAlunobyMatricula, getAlunobyStatus, getAno
 }

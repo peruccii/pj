@@ -12,7 +12,7 @@ const {getCurso} = require('./modulos/cursos.js')
 const {getNomes} = require('./modulos/alunos.js')
 const {getAlunosbyCurso} = require('./modulos/alunos.js')
 const {getAlunobyMatricula} = require('./modulos/alunos.js')
-const {getStatusFC} = require('./modulos/alunos.js')
+const {getAlunobyStatus} = require('./modulos/alunos.js')
 const {getAno} = require('./modulos/alunos.js')
 
 
@@ -64,13 +64,14 @@ const app = express()
 
         //Endpoint listagem alunos do respectivo curso
         app.get('/alunos/:curso', cors(), async function(request,response,next){
-            let chave = request.params.curso
-            let status = request.query.status
-            let alunos = getAlunosbyCurso(chave,status)
+            let curso = request.params.curso
+            let alunos = getAlunosbyCurso(curso)
+            let alunosJSON = {}
 
             if (alunos){
+                alunosJSON.alunos = alunos
                 response.status(200)
-                response.json(alunos)
+                response.json(alunosJSON)
             }else{
                 response.status(404)
             }
@@ -90,13 +91,17 @@ const app = express()
         })
 
         //Endpoint listagem alunos cursando ou finalizando
-        app.get('/statos/:fc', cors(), async function(request,response,next){
-            let chave = request.params.fc
-            let statos = getStatusFC(chave)
+        app.get('/estudante/:curso/:status', cors(), async function(request,response,next){
+            let curso = request.params.curso
+            let status = request.params.status
 
-            if (statos){
+            let estudante = getAlunobyStatus(curso, status)
+            let alunosJSON = {}
+
+            if (estudante){
+                alunosJSON.estudante = estudante
                 response.status(200)
-                response.json(statos)
+                response.json(alunosJSON)
             }else{
                 response.status(404)
             }
